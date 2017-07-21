@@ -11,11 +11,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class KafkaProducerApplication implements CommandLineRunner {
 	
 	@Autowired
-	private KafkaProducer producer;
+	private FlightHubKafkaProducer producer;
 	
 	String topic = "Test";
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FlightHubKafkaProducer.class);
 
 	public static void main(String[] args) {
 		SpringApplication.run(KafkaProducerApplication.class, args);

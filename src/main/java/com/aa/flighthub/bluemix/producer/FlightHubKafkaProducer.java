@@ -8,9 +8,9 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-public class KafkaProducer {
+public class FlightHubKafkaProducer {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(FlightHubKafkaProducer.class);
 
   @Autowired
   private KafkaTemplate<String, String> kafkaTemplate;

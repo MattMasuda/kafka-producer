@@ -22,6 +22,12 @@ public class KafkaProducerConfig {
 	  
 	  @Value("${sasl.jaas.config}")
 	  private String saslConfig;
+	  
+	  @Value("${user}")
+	  private String user;
+	  
+	  @Value("${password}")
+	  private String password;
 
 	  @Bean
 	  public Map<String, Object> producerConfigs() {
@@ -29,9 +35,9 @@ public class KafkaProducerConfig {
 	    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 	    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 	    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-	    props.put(SaslConfigs.SASL_JAAS_CONFIG, saslConfig);
 	    // The security.protocol constant is defined in org.apache.kafka.streams.StreamsConfig and I don't want to import a whole package just for that
 	    props.put("security.protocol", "SASL_SSL");
+	    props.put(SaslConfigs.SASL_JAAS_CONFIG, saslConfig.replace("USERNAME", user).replace("PASSWORD", password));
 	    props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
 	    props.put(SslConfigs.SSL_PROTOCOL_CONFIG, "TLSv1.2");
 	    props.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, "TLSv1.2");
@@ -51,8 +57,8 @@ public class KafkaProducerConfig {
 	  }
 
 	  @Bean
-	  public KafkaProducer producer() {
-	    return new KafkaProducer();
+	  public FlightHubKafkaProducer producer() {
+	    return new FlightHubKafkaProducer();
 	  }
 	
 }
