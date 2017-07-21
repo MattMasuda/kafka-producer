@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.config.SaslConfigs;
+import org.apache.kafka.common.config.SslConfigs;
+
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,16 +17,25 @@ import org.springframework.kafka.core.ProducerFactory;
 
 @Configuration
 public class KafkaProducerConfig {
-	  @Value("${kafka.bootstrap-servers}")
+	  @Value("${bootstrap.servers}")
 	  private String bootstrapServers;
+	  
+	  @Value("${sasl.jaas.config}")
+	  private String saslConfig;
 
 	  @Bean
 	  public Map<String, Object> producerConfigs() {
 	    Map<String, Object> props = new HashMap<>();
-	    // list of host:port pairs used for establishing the initial connections to the Kakfa cluster
 	    props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 	    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 	    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+	    props.put(SaslConfigs.SASL_JAAS_CONFIG, saslConfig);
+	    // The security.protocol constant is defined in org.apache.kafka.streams.StreamsConfig and I don't want to import a whole package just for that
+	    props.put("security.protocol", "SASL_SSL");
+	    props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
+	    props.put(SslConfigs.SSL_PROTOCOL_CONFIG, "TLSv1.2");
+	    props.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, "TLSv1.2");
+	    props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS");
 	    
 	    return props;
 	  }
