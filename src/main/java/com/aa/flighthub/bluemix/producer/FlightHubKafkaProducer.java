@@ -2,7 +2,6 @@ package com.aa.flighthub.bluemix.producer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.util.concurrent.ListenableFuture;
@@ -12,10 +11,15 @@ public class FlightHubKafkaProducer {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FlightHubKafkaProducer.class);
 
-  @Autowired
   private KafkaTemplate<String, String> kafkaTemplate;
+  private String topic;
+  
+  public FlightHubKafkaProducer(KafkaTemplate<String,String> kafkaTemplate, String topic) {
+	  this.kafkaTemplate = kafkaTemplate;
+	  this.topic = topic;
+  }
 
-  public void send(String topic, String message) {
+  public void send(String message) {
     // the KafkaTemplate provides asynchronous send methods returning a Future
     ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, message);
 

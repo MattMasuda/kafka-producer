@@ -24,7 +24,7 @@ public class KafkaProducerApplication implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception {
 		LOGGER.info("Ready");
-		producer.send(topic, "Test Message");
+		producer.send("Test Message");
 		
 	}
 	

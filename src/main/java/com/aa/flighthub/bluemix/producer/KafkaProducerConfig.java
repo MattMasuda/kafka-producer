@@ -28,6 +28,10 @@ public class KafkaProducerConfig {
 	  
 	  @Value("${password}")
 	  private String password;
+	  
+	  @Value("${topic}")
+	  private String topic;
+	  
 
 	  @Bean
 	  public Map<String, Object> producerConfigs() {
@@ -58,7 +62,7 @@ public class KafkaProducerConfig {
 
 	  @Bean
 	  public FlightHubKafkaProducer producer() {
-	    return new FlightHubKafkaProducer();
+	    return new FlightHubKafkaProducer(kafkaTemplate(), topic);
 	  }
 	
 }
