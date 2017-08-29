@@ -7,6 +7,7 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,9 @@ public class KafkaProducerApplication implements CommandLineRunner {
 	
 	@Autowired
 	private FlightHubKafkaProducer producer;
+	
+	@Value("${timer.period}")
+	private long period;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FlightHubKafkaProducer.class);
 
@@ -34,7 +38,6 @@ public class KafkaProducerApplication implements CommandLineRunner {
 		
 		Timer timer = new Timer("Timer");
 		long delay = 0L;
-		long period = 500L;
 		timer.scheduleAtFixedRate(repeatedTask, delay, period);
 	}
 	
