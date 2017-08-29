@@ -40,6 +40,7 @@ public class KafkaProducerConfig {
 	    props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 	    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 	    // The security.protocol constant is defined in org.apache.kafka.streams.StreamsConfig and I don't want to import a whole package just for that
+	    // Comment out the rest of these properties if you're using a vanilla Kafka installation
 	    props.put("security.protocol", "SASL_SSL");
 	    props.put(SaslConfigs.SASL_JAAS_CONFIG, saslConfig.replace("USERNAME", user).replace("PASSWORD", password));
 	    props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");

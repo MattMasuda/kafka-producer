@@ -1,5 +1,9 @@
 package com.aa.flighthub.bluemix.producer;
 
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +17,6 @@ public class KafkaProducerApplication implements CommandLineRunner {
 	@Autowired
 	private FlightHubKafkaProducer producer;
 	
-	String topic = "Test";
-	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FlightHubKafkaProducer.class);
 
 	public static void main(String[] args) {
@@ -24,8 +26,16 @@ public class KafkaProducerApplication implements CommandLineRunner {
 	@Override
 	public void run(String... arg0) throws Exception {
 		LOGGER.info("Ready");
-		producer.send("Test Message");
+		TimerTask repeatedTask = new TimerTask() {
+			public void run() {
+				producer.send("Test Message " + new Date().toInstant().toEpochMilli() );
+			}
+		};
 		
+		Timer timer = new Timer("Timer");
+		long delay = 0L;
+		long period = 500L;
+		timer.scheduleAtFixedRate(repeatedTask, delay, period);
 	}
 	
 	
